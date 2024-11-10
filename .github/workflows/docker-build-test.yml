@@ -43,10 +43,12 @@ jobs:
           fi
         continue-on-error: true
 
+      - name: Create result file
+        run: |
+          touch /tmp/${{ env.status }}
+
       - name: Publish Result as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.status }}
           path: /tmp/${{ env.status }}
-        run: |
-          touch /tmp/${{ env.status }}
