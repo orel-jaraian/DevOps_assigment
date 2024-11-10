@@ -1,6 +1,10 @@
 name: Build and Test Docker
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build-test:
@@ -11,17 +15,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+        uses: docker/setup-buildx-action@v2
 
       - name: Build and run Docker Compose
         run: |
           docker-compose up --build -d
-          sleep 5  # Wait for services to start
+          sleep 5  # Wait for Nginx to initialize
           
       - name: Run tests and check responses
         id: run-tests
