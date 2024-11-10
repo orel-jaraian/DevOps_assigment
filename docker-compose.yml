@@ -1,0 +1,14 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+
+  tester:
+    build:
+      context: ./tester
+    depends_on:
+      - nginx
