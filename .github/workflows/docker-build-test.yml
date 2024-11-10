@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and run docker-compose
         run: |
-          docker-compose up --build -d
+          docker-compose.yml up --build -d
           sleep 10  # Wait for the containers to start
 
       - name: Run tests and check responses
