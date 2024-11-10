@@ -1,12 +1,6 @@
 name: Build and Test Docker
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
 
 jobs:
   build-test:
@@ -14,10 +8,10 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3  # Updated to v3 for Node 20 compatibility
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and run Docker Compose
         run: |
