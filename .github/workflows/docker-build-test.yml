@@ -20,7 +20,7 @@ jobs:
       - name: Build and run Docker Compose
         run: |
           docker compose up --build -d
-          sleep 5  # Wait for Nginx to initialize
+          sleep 20  # Wait for Nginx to initialize
           
       - name: Run tests and check responses
         id: run-tests
