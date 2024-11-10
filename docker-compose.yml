@@ -8,6 +8,6 @@ services:
 
   tester:
     build:
-      context: ./tester
+      context: tester/Dockerfile
     depends_on:
       - nginx
