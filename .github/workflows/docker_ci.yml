@@ -42,5 +42,6 @@ jobs:
           else
             echo "Tests failed" > result.txt
             echo "test-status=fail" >> $GITHUB_OUTPUT
+          fi
         id: test_status
 
