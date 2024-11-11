@@ -38,4 +38,9 @@ jobs:
         run: |
           if docker exec nginx_tester test -f /test_result/succeeded; then
             echo "Tests passed" > result.txt
-            echo "::set
+            echo "test-status=succeeded" >> $GITHUB_OUTPUT
+          else
+            echo "Tests failed" > result.txt
+            echo "test-status=fail" >> $GITHUB_OUTPUT
+        id: test_status
+
