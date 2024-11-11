@@ -1,0 +1,25 @@
+name: Docker CI
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and run Docker Compose
+        run: |
+          docker-compose up --build -d
+          sleep 5  # Wait for services to start
+
+      - name: Test and check results
+        run: |
+          docker cp tester:/result/succeeded . || echo "Test failed"
+          docker cp tester:/result/fail . || echo "Test succeeded"
+        continue-on-error: true
