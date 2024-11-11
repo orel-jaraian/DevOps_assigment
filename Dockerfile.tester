@@ -1,5 +1,12 @@
+# Alpine is a lightweight Linux distribution, which keeps the image size small
 FROM python:3-alpine
 RUN pip install requests
+
+# Create directory for Test Results
 RUN mkdir -p /test_result
+
+# Copy the test script from the host machine into the container’s root
 COPY check_servers.py /check_servers.py
+
+# run the script and ensure the container remains alive
 CMD ["sh", "-c", "python3 /check_servers.py && tail -f /dev/null"] # ensure the container stays alive for further inspection
