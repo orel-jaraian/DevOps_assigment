@@ -17,5 +17,6 @@ This project configures a lightweight Nginx server environment with automated te
 
 - **Passing the Test:** For the test to pass successfully, both servers must respond with HTTP status 200 OK. If both servers return this status, the result file will show "succeeded," indicating that both servers are functioning as expected and serving the correct responses.
 - **Failing the Test:** If either server does not respond with status 200 (for example, if one server is down or returns a different status), the result file will indicate "fail."
+
 The result file is stored in the container, allowing for easy inspection of test outcomes within the tester container after the script has run.
 
