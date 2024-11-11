@@ -32,7 +32,7 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to stabilize
-        run: sleep 5
+        run: sleep 15
 
       - name: Check test results
         run: |
