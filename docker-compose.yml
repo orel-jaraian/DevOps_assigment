@@ -1,17 +1,18 @@
+version: '3.8'
 services:
   nginx:
     build:
-      context: ./nginx            # Set context to the nginx folder
-      dockerfile: Dockerfile       # Specify Dockerfile within the nginx context
+      context: .
+      dockerfile: Dockerfile.nginx
     ports:
       - "8080:8080"
       - "8081:8081"
 
-  # tester:
-  #   build:
-  #     context: ./tester            # Set context to the tester folder
-  #     dockerfile: Dockerfile       # Specify Dockerfile within the tester context
-  #   depends_on:
-  #     - nginx
-  #   volumes:
-  #     - ./result:/result
+  tester:
+    build:
+      context: .
+      dockerfile: Dockerfile.tester
+    depends_on:
+      - nginx
+    volumes:
+      - ./result:/result
