@@ -26,7 +26,7 @@ jobs:
 
       # Upload artifact based on test results
       - name: Upload test result artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.test.outputs.result }}
           path: result.txt
@@ -36,4 +36,3 @@ jobs:
         if: always()
         run: |
           docker-compose down
-
