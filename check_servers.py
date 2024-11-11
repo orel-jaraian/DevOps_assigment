@@ -1,21 +1,27 @@
-# check_servers.py
 import requests
 
 def check_server(url):
     try:
         response = requests.get(url)
-        print(f"{url} responded with {response.status_code}")
-        return response.status_code == 200
-    except Exception as e:
-        print(f"Error connecting to {url}: {e}")
-        return False
+        if response.status_code == 200:
+            print(f"Success: {url} returned status {response.status_code}")
+            return "succeeded"
+        else:
+            print(f"Failure: {url} returned status {response.status_code}")
+            return "fail"
+    except requests.RequestException as e:
+        print(f"Error: Could not connect to {url} - {e}")
+        return "fail"
 
 if __name__ == "__main__":
-    server_1 = check_server("http://nginx:8080")
-    server_2 = check_server("http://nginx:8081")
-    if server_1 and not server_2:
-        with open("/result/succeeded", "w") as f:
-            f.write("All tests passed")
+    results = [
+        check_server("http://nginx:8080"),
+        check_server("http://nginx:8081")
+    ]
+
+    if "fail" in results:
+        with open("/test_result/fail", "w") as f:
+            f.write("Test failed.")
     else:
-        with open("/result/fail", "w") as f:
-            f.write("Some tests failed")
+        with open("/test_result/succeeded", "w") as f:
+            f.write("All tests passed.")
