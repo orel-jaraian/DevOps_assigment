@@ -32,10 +32,11 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to stabilize
-        run: sleep 10
+        run: sleep 5
 
       - name: Check test results
         run: |
+          docker logs nginx_tester
           if docker exec nginx_tester test -f /test_result/succeeded; then
             echo "Tests passed" > result.txt
             echo "test-status=succeeded" >> $GITHUB_OUTPUT
