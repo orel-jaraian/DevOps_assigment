@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repository
+      - name: Check out the repository # We make the repository actually available to us 
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
