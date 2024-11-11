@@ -9,7 +9,7 @@ services:
 
   tester:
     build:
-      context: ./tester            # Set context to the tester folder
+      context: tester            # Set context to the tester folder
       dockerfile: Dockerfile       # Specify Dockerfile within the tester context
     depends_on:
       - nginx
