@@ -34,22 +34,23 @@ jobs:
       - name: Wait for services to stabilize
         run: sleep 10
 
-      - name: Run tests in tester container
-        id: test
+      - name: Check test results
         run: |
-          docker compose run --rm tester && echo "succeeded" > result.txt || echo "fail" > result.txt
+          if docker exec nginx_tester test -f /test_result/succeeded; then
+            echo "Tests passed" > result.txt
+            echo "test-status=succeeded" >> $GITHUB_OUTPUT
+          else
+            echo "Tests failed" > result.txt
+            echo "test-status=fail" >> $GITHUB_OUTPUT
+          fi
+        id: test_status
 
-      # Upload artifact based on test results
-      - name: Upload test result artifact
+      - name: Upload Test Result Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.test.outputs.result }}
+          name: ${{ steps.test_status.outputs.test-status }}
           path: result.txt
 
-      # Tear down Docker Compose
-      - name: Tear down Docker Compose
-        if: always()
-        run: |
-          docker compose down
+
 
 
