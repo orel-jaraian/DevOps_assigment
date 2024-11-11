@@ -1,38 +1,52 @@
 name: Docker CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  build-and-test:
+  docker-build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and run Docker Compose
-        run: |
-          docker compose up --build -d
-          sleep 5  # Wait for services to start
-
-      # Run the test container
-      - name: Run tests in tester container
-        id: test
-        run: |
-          docker-compose run --rm tester && echo "succeeded" > result.txt || echo "fail" > result.txt
-
-      # Upload artifact based on test results
-      - name: Upload test result artifact
-        uses: actions/upload-artifact@v3
+      - name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          name: ${{ steps.test.outputs.result }}
-          path: result.txt
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
-      # Tear down Docker Compose
-      - name: Tear down Docker Compose
-        if: always()
+      - name: Build and push Docker images
+        run: docker-compose build
+
+      - name: Run Docker Compose
+        run: docker-compose up -d
+
+      - name: Wait for services to stabilize
+        run: sleep 10
+
+      - name: Check test results
         run: |
-          docker-compose down
+          if docker exec nginx_tester test -f /test_result/succeeded; then
+            echo "Tests passed" > result.txt
+            echo "::set-output name=test-status::succeeded"
+          else
+            echo "Tests failed" > result.txt
+            echo "::set-output name=test-status::fail"
+          fi
+        id: test_status
+
+      - name: Upload Test Result Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.test_status.outputs.test-status }}
+          path: result.txt
