@@ -19,3 +19,4 @@ services:
     depends_on:
       - nginx
     container_name: nginx_tester
+    command: ["sh", "-c", "python3 /check_servers.py && tail -f /dev/null"]
