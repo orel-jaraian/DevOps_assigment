@@ -1,4 +1,4 @@
 FROM python:3-alpine
 RUN pip install requests
 COPY check_servers.py /check_servers.py
-CMD ["sh", "-c", "python3 /check_servers.py && tail -f /dev/null"] # ensure the container stays alive for further inspection:
+CMD ["sh", "-c", "python3 /check_servers.py && tail -f /dev/null"] # ensure the container stays alive for further inspection
