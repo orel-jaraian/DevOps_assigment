@@ -38,15 +38,4 @@ jobs:
         run: |
           if docker exec nginx_tester test -f /test_result/succeeded; then
             echo "Tests passed" > result.txt
-            echo "::set-output name=test-status::succeeded"
-          else
-            echo "Tests failed" > result.txt
-            echo "::set-output name=test-status::fail"
-          fi
-        id: test_status
-
-      - name: Upload Test Result Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.test_status.outputs.test-status }}
-          path: result.txt
+            echo "::set
