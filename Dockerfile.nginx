@@ -1,4 +1,4 @@
-FROM nginx:alpine #use a lightweight version
+FROM ubuntu:20.04 #use a lightweight version
 RUN apt-get update && apt-get install -y nginx && \
     rm -rf /var/lib/apt/lists/* && \
     echo "Custom HTML Response" > /usr/share/nginx/html/index.html
